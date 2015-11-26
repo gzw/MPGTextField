@@ -208,8 +208,23 @@ NSArray *data;
 
 - (void)tapped:(UIGestureRecognizer *)gesture
 {
-    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         [tableViewController.tableView setAlpha:0.0];
+                     }
+                     completion:^(BOOL finished){
+                         [tableViewController.tableView removeFromSuperview];
+                         tableViewController = nil;
+                     }];
 }
 
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    CGPoint pt = [gestureRecognizer locationInView:tableViewController.tableView];
+    CGRect rt = tableViewController.tableView.bounds;
+    if (CGRectContainsPoint(rt, pt)) {
+        return NO;
+    }
+    return YES;
+}
 
 @end
